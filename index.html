@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I-PAL — India Policy Action Lab</title>
+  <meta name="description" content="Policy-to-implementation advisory for entrepreneurship, innovation, trade, and technology-led growth in India.">
+  <meta property="og:title" content="I-PAL — India Policy Action Lab">
+  <meta property="og:description" content="Ideas. Institutions. Impact.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%231B4332' width='100' height='100' rx='16'/><text y='70' x='50' text-anchor='middle' font-size='44' font-family='serif' fill='%23F7F5F0' font-weight='bold'>IP</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green: #1B4332; --green-light: #2D6A4F; --green-pale: #D8F3DC;
+      --amber: #D97706; --amber-light: #F59E0B; --amber-pale: #FEF3C7;
+      --bg: #FAFAF8; --warm: #F3F1ED; --dark: #111111;
+      --text: #111827; --text2: #4B5563; --muted: #9CA3AF;
+      --border: #E5E7EB;
+      --serif: 'Merriweather', Georgia, serif;
+      --sans: 'Open Sans', -apple-system, sans-serif;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--sans); color: var(--text); background: var(--bg); line-height: 1.65; overflow-x: hidden; }
+    ::selection { background: var(--green); color: white; }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 clamp(1.25rem, 5vw, 3rem); }
+    .r { opacity: 0; transform: translateY(24px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+    .r.v { opacity: 1; transform: translateY(0); }
+    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}
+    .label { font-family: var(--sans); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green); }
+    .label--light { color: var(--amber-light); }
+
+    /* ====== NAV ====== */
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; transition: all 0.4s; }
+    .nav.scrolled { background: rgba(250,250,248,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+    .nav__inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem clamp(1.25rem,5vw,3rem); transition: padding 0.4s; }
+    .nav.scrolled .nav__inner { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+    .nav__logo { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; }
+    .nav__logo em { font-style: normal; color: var(--green); }
+    .nav__links { display: flex; gap: 2rem; align-items: center; }
+    .nav__link { font-size: 0.8rem; font-weight: 500; color: var(--text2); transition: color 0.2s; }
+    .nav__link:hover { color: var(--green); }
+    .nav__cta { font-size: 0.78rem; font-weight: 600; color: white; background: var(--green); padding: 0.5rem 1.25rem; border-radius: 6px; transition: all 0.3s var(--ease); }
+    .nav__cta:hover { background: var(--green-light); transform: translateY(-1px); }
+    .nav__tog { display: none; background: none; border: none; cursor: pointer; }
+    .nav__tog span { display: block; width: 22px; height: 2px; background: var(--text); margin: 5px 0; transition: all 0.3s; }
+
+    /* ====== HERO — cinematic split ====== */
+    .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; }
+    .hero__left { display: flex; flex-direction: column; justify-content: center; padding: clamp(6rem,12vh,10rem) clamp(1.5rem,5vw,4rem); background: var(--dark); color: white; }
+    .hero__eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--amber-light); margin-bottom: 2rem; opacity:0; animation: fu .6s var(--ease) .2s forwards; }
+    .hero__eyebrow::before { content:''; width: 24px; height: 1px; background: var(--amber-light); }
+    .hero__title { font-family: var(--serif); font-size: clamp(2.2rem,4.5vw,3.8rem); font-weight: 700; line-height: 1.15; letter-spacing: -0.015em; opacity:0; animation: fu .8s var(--ease) .4s forwards; }
+    .hero__title em { font-style: italic; font-weight: 300; color: var(--amber-light); }
+    .hero__desc { font-size: clamp(0.9rem,1.3vw,1.05rem); font-weight: 300; color: rgba(255,255,255,0.55); max-width: 420px; line-height: 1.85; margin-top: 1.5rem; opacity:0; animation: fu .8s var(--ease) .6s forwards; }
+    .hero__actions { display: flex; gap: 0.75rem; margin-top: 2rem; opacity:0; animation: fu .8s var(--ease) .8s forwards; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-family: var(--sans); font-size: 0.8rem; font-weight: 600; border-radius: 6px; border: none; cursor: pointer; transition: all 0.3s var(--ease); }
+    .btn--w { background: white; color: var(--green); }
+    .btn--w:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+    .btn--o { background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2); }
+    .btn--o:hover { border-color: rgba(255,255,255,0.5); color: white; }
+    .btn--g { background: var(--green); color: white; }
+    .btn--g:hover { background: var(--green-light); transform: translateY(-2px); }
+    .btn svg { width: 14px; height: 14px; }
+    .hero__right { position: relative; overflow: hidden; }
+    .hero__right img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    @keyframes fu { from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)} }
+
+    /* ====== STATS BAR ====== */
+    .stats { background: var(--green); padding: 2.5rem 0; }
+    .stats__inner { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1.5rem; text-align: center; }
+    .stat { color: white; }
+    .stat__num { font-family: var(--serif); font-size: 2.2rem; font-weight: 700; color: var(--amber-light); line-height: 1; }
+    .stat__label { font-size: 0.72rem; font-weight: 500; color: rgba(255,255,255,0.5); margin-top: 0.35rem; letter-spacing: 0.04em; }
+
+    /* ====== INTRO — image + text editorial ====== */
+    .intro { padding: clamp(5rem,12vw,9rem) 0; }
+    .intro__grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 3rem; align-items: center; }
+    .intro__img { border-radius: 8px; overflow: hidden; aspect-ratio: 4/3; }
+    .intro__img img { width: 100%; height: 100%; object-fit: cover; }
+    .intro__lead { font-family: var(--serif); font-style: italic; font-size: clamp(1.05rem,1.5vw,1.2rem); line-height: 1.7; color: var(--text); border-left: 3px solid var(--green); padding-left: 1.25rem; margin-bottom: 1.5rem; }
+    .intro__text { font-size: 0.9rem; color: var(--text2); line-height: 1.85; margin-bottom: 1rem; }
+
+    /* ====== DIFF — alternating image+text rows ====== */
+    .diff { padding: clamp(5rem,12vw,9rem) 0; background: var(--warm); }
+    .diff__row { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; margin-bottom: 4rem; }
+    .diff__row:nth-child(even) { direction: rtl; }
+    .diff__row:nth-child(even) > * { direction: ltr; }
+    .diff__row:last-child { margin-bottom: 0; }
+    .diff__img { border-radius: 8px; overflow: hidden; aspect-ratio: 16/10; }
+    .diff__img img { width: 100%; height: 100%; object-fit: cover; }
+    .diff__content {}
+    .diff__num { font-family: var(--serif); font-size: 3rem; font-weight: 700; color: var(--green); opacity: 0.1; line-height: 1; margin-bottom: 0.5rem; }
+    .diff__title { font-family: var(--serif); font-size: 1.25rem; font-weight: 700; line-height: 1.35; margin-bottom: 0.75rem; }
+    .diff__text { font-size: 0.88rem; color: var(--text2); line-height: 1.85; }
+
+    /* ====== GAP — large numbers visual ====== */
+    .gap { padding: clamp(5rem,12vw,9rem) 0; position: relative; overflow: hidden; }
+    .gap__bg { position: absolute; right: -5%; top: 50%; transform: translateY(-50%); font-family: var(--serif); font-size: clamp(15rem,30vw,25rem); font-weight: 900; color: var(--green); opacity: 0.03; line-height: 1; pointer-events: none; }
+    .gap__header { margin-bottom: 3rem; position: relative; }
+    .gap__title { font-family: var(--serif); font-size: clamp(1.6rem,2.5vw,2.2rem); font-weight: 700; line-height: 1.3; }
+    .gap__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; position: relative; }
+    .gap__card { display: flex; gap: 1rem; padding: 1.25rem 1.5rem; background: white; border: 1px solid var(--border); border-radius: 8px; transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s var(--ease); }
+    .gap__card:hover { border-color: var(--green); box-shadow: 0 4px 16px rgba(27,67,50,0.08); transform: translateY(-2px); }
+    .gap__card-num { font-family: var(--serif); font-size: 1.5rem; font-weight: 700; color: var(--amber); line-height: 1; flex-shrink: 0; }
+    .gap__card-text { font-size: 0.88rem; color: var(--text2); line-height: 1.6; }
+
+    /* ====== FOCUS — bento grid with images ====== */
+    .focus { padding: clamp(5rem,12vw,9rem) 0; background: var(--green); color: white; }
+    .focus__header { display: flex; justify-content: space-between; align-items: end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem; }
+    .focus__title { font-family: var(--serif); font-size: clamp(1.6rem,2.5vw,2.2rem); font-weight: 700; line-height: 1.3; }
+    .focus__count { font-size: 0.75rem; color: rgba(255,255,255,0.35); }
+    .bento { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: minmax(180px, auto); gap: 0.75rem; }
+    .bento__item { padding: 1.5rem; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.06); transition: background 0.3s, transform 0.3s var(--ease); position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: end; }
+    .bento__item:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+    .bento__item--wide { grid-column: span 2; }
+    .bento__item--img { padding: 0; }
+    .bento__item--img img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+    .bento__num { font-family: var(--serif); font-size: 0.75rem; color: var(--amber-light); margin-bottom: auto; opacity: 0.6; }
+    .bento__title { font-family: var(--serif); font-size: 0.95rem; font-weight: 700; line-height: 1.35; margin-bottom: 0.4rem; }
+    .bento__text { font-size: 0.72rem; color: rgba(255,255,255,0.4); line-height: 1.7; }
+
+    /* ====== SERVICES ====== */
+    .services { padding: clamp(5rem,12vw,9rem) 0; }
+    .services__grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem; align-items: start; }
+    .services__sticky { position: sticky; top: 6rem; }
+    .services__title { font-family: var(--serif); font-size: clamp(1.6rem,2.5vw,2.2rem); font-weight: 700; line-height: 1.3; margin-bottom: 1rem; }
+    .services__desc { font-size: 0.9rem; color: var(--text2); line-height: 1.8; margin-bottom: 1.5rem; }
+    .services__img { border-radius: 8px; overflow: hidden; aspect-ratio: 4/3; margin-top: 1.5rem; }
+    .services__img img { width: 100%; height: 100%; object-fit: cover; }
+    .svc { border-bottom: 1px solid var(--border); }
+    .svc:first-child { border-top: 1px solid var(--border); }
+    .svc__h { display: flex; justify-content: space-between; align-items: center; padding: 1.15rem 0; cursor: pointer; transition: color 0.2s; }
+    .svc__h:hover, .svc.open .svc__h { color: var(--green); }
+    .svc__t { font-family: var(--serif); font-size: 1rem; font-weight: 700; line-height: 1.35; }
+    .svc__icon { width: 18px; height: 18px; position: relative; flex-shrink: 0; margin-left: 1rem; }
+    .svc__icon::before,.svc__icon::after { content:''; position: absolute; background: var(--green); border-radius: 1px; transition: transform 0.3s var(--ease); }
+    .svc__icon::before { width: 12px; height: 1.5px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+    .svc__icon::after { width: 1.5px; height: 12px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+    .svc.open .svc__icon::after { transform: translate(-50%,-50%) rotate(90deg); }
+    .svc__body { max-height: 0; overflow: hidden; transition: max-height 0.5s var(--ease); }
+    .svc__body-inner { padding: 0 0 1.25rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 0.2rem 1.5rem; }
+    .svc__sub { font-size: 0.8rem; color: var(--muted); padding: 0.35rem 0 0.35rem 1rem; position: relative; }
+    .svc__sub::before { content:''; position: absolute; left: 0; top: 50%; width: 4px; height: 4px; border-radius: 50%; background: var(--green); opacity: 0.25; transform: translateY(-50%); }
+
+    /* ====== APPROACH — visual diagram ====== */
+    .approach { padding: clamp(5rem,12vw,9rem) 0; background: var(--warm); }
+    .approach__header { text-align: center; margin-bottom: 3.5rem; }
+    .approach__title { font-family: var(--serif); font-size: clamp(1.6rem,2.5vw,2.2rem); font-weight: 700; line-height: 1.3; }
+    .flow { display: flex; align-items: stretch; gap: 0; position: relative; }
+    .flow__step { flex: 1; text-align: center; padding: 2rem 1rem; position: relative; background: white; border: 1px solid var(--border); margin: 0 -0.5px; transition: all 0.3s var(--ease); }
+    .flow__step:first-child { border-radius: 8px 0 0 8px; }
+    .flow__step:last-child { border-radius: 0 8px 8px 0; }
+    .flow__step:hover { background: var(--green); color: white; transform: translateY(-4px); box-shadow: 0 12px 32px rgba(27,67,50,0.15); z-index: 1; }
+    .flow__step:hover .flow__num { color: var(--amber-light); }
+    .flow__step:hover .flow__text { color: rgba(255,255,255,0.6); }
+    .flow__step:hover .flow__arrow { color: var(--amber-light); }
+    .flow__num { font-family: var(--serif); font-size: 2rem; font-weight: 700; color: var(--green); opacity: 0.15; line-height: 1; margin-bottom: 0.75rem; transition: color 0.3s, opacity 0.3s; }
+    .flow__step:hover .flow__num { opacity: 1; }
+    .flow__name { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; transition: color 0.3s; }
+    .flow__text { font-size: 0.75rem; color: var(--muted); line-height: 1.7; transition: color 0.3s; }
+    .flow__arrow { position: absolute; right: -8px; top: 50%; transform: translateY(-50%); z-index: 2; width: 16px; height: 16px; background: white; border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; color: var(--green); transition: all 0.3s; }
+    .flow__step:last-child .flow__arrow { display: none; }
+
+    /* ====== ABOUT — full width image band + text ====== */
+    .about-img { height: clamp(280px,35vw,420px); position: relative; overflow: hidden; }
+    .about-img img { width: 100%; height: 100%; object-fit: cover; }
+    .about-img__overlay { position: absolute; inset: 0; background: linear-gradient(to top, var(--bg) 0%, transparent 40%); }
+    .about { padding: clamp(3rem,8vw,6rem) 0 clamp(5rem,12vw,9rem); }
+    .about__grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: start; }
+    .about__title { font-family: var(--serif); font-size: clamp(1.6rem,2.5vw,2.2rem); font-weight: 700; line-height: 1.3; margin-bottom: 1.5rem; }
+    .about__text { font-size: 0.9rem; color: var(--text2); line-height: 1.85; margin-bottom: 1rem; }
+    .vm-card { padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border); background: white; transition: all 0.3s; margin-bottom: 1rem; }
+    .vm-card:hover { border-color: var(--green); box-shadow: 0 4px 16px rgba(27,67,50,0.06); }
+    .vm-card__label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--amber); margin-bottom: 0.5rem; }
+    .vm-card__text { font-family: var(--serif); font-style: italic; font-size: 0.9rem; line-height: 1.7; }
+
+    /* ====== PRINCIPLES — icon grid ====== */
+    .principles { padding: clamp(5rem,12vw,9rem) 0; background: var(--dark); color: white; position: relative; overflow: hidden; }
+    .principles__bg { position: absolute; inset: 0; opacity: 0.04; background: url('https://images.unsplash.com/photo-1562979314-bee7453e911c?w=1600&q=80') center/cover; }
+    .principles__inner { position: relative; z-index: 1; }
+    .principles__header { text-align: center; margin-bottom: 3.5rem; }
+    .principles__title { font-family: var(--serif); font-size: clamp(1.6rem,2.5vw,2.2rem); font-weight: 700; line-height: 1.3; }
+    .pgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+    .pcard { padding: 1.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); backdrop-filter: blur(8px); transition: all 0.3s var(--ease); }
+    .pcard:hover { border-color: rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); transform: translateY(-3px); }
+    .pcard__icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(217,119,6,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+    .pcard__icon svg { width: 18px; height: 18px; color: var(--amber-light); }
+    .pcard__title { font-family: var(--serif); font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; color: white; }
+    .pcard__text { font-size: 0.78rem; color: rgba(255,255,255,0.4); line-height: 1.8; }
+
+    /* ====== PARTNERS — with background image ====== */
+    .partners { padding: clamp(5rem,12vw,9rem) 0; position: relative; }
+    .partners__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .partners__content {}
+    .partners__title { font-family: var(--serif); font-size: clamp(1.6rem,2.5vw,2.2rem); font-weight: 700; line-height: 1.3; margin-bottom: 0.75rem; }
+    .partners__phil { font-family: var(--serif); font-style: italic; font-size: 1rem; color: var(--text2); line-height: 1.65; margin-bottom: 2rem; }
+    .partners__list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .partner { padding: 0.875rem 1.25rem; background: var(--warm); border-radius: 6px; font-size: 0.85rem; color: var(--text2); display: flex; align-items: center; gap: 0.75rem; transition: all 0.3s; }
+    .partner:hover { background: var(--green-pale); color: var(--green); }
+    .partner::before { content:''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); opacity: 0.3; flex-shrink: 0; }
+    .partners__img { border-radius: 8px; overflow: hidden; aspect-ratio: 1; }
+    .partners__img img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ====== CTA ====== */
+    .cta { padding: clamp(5rem,12vw,8rem) 0; background: var(--green); color: white; text-align: center; position: relative; overflow: hidden; }
+    .cta__pattern { position: absolute; inset: 0; opacity: 0.05; background: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&q=80') center/cover; }
+    .cta__inner { position: relative; z-index: 1; }
+    .cta__title { font-family: var(--serif); font-size: clamp(1.8rem,3.5vw,2.8rem); font-weight: 700; line-height: 1.25; margin-bottom: 1rem; }
+    .cta__text { font-size: 0.9rem; color: rgba(255,255,255,0.55); max-width: 480px; margin: 0 auto 2rem; line-height: 1.8; }
+    .cta__btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 2rem; background: white; color: var(--green); font-family: var(--sans); font-size: 0.82rem; font-weight: 600; border-radius: 6px; border: none; cursor: pointer; transition: all 0.3s var(--ease); }
+    .cta__btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
+    .cta__btn svg { width: 14px; height: 14px; transition: transform 0.3s; }
+    .cta__btn:hover svg { transform: translateX(3px); }
+
+    /* ====== FOOTER ====== */
+    .footer { padding: 2.5rem 0; border-top: 1px solid var(--border); }
+    .footer__inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer__logo { font-family: var(--serif); font-size: 1rem; font-weight: 700; }
+    .footer__logo em { font-style: normal; color: var(--green); }
+    .footer__links { display: flex; gap: 1.5rem; }
+    .footer__link { font-size: 0.72rem; color: var(--muted); transition: color 0.2s; }
+    .footer__link:hover { color: var(--green); }
+    .footer__copy { font-size: 0.72rem; color: var(--muted); }
+
+    /* ====== RESPONSIVE ====== */
+    @media(max-width:1024px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero__right { height: 40vh; }
+      .bento { grid-template-columns: repeat(2, 1fr); }
+      .bento__item--wide { grid-column: span 1; }
+      .flow { flex-direction: column; gap: 0.75rem; }
+      .flow__step { border-radius: 8px !important; margin: 0; }
+      .flow__arrow { display: none !important; }
+      .pgrid { grid-template-columns: repeat(2, 1fr); }
+      .services__grid { grid-template-columns: 1fr; }
+      .services__sticky { position: static; }
+      .partners__inner { grid-template-columns: 1fr; }
+    }
+    @media(max-width:768px) {
+      .nav__links { display: none; }
+      .nav__links.active { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(250,250,248,0.98); backdrop-filter: blur(20px); padding: 1.5rem clamp(1.25rem,5vw,3rem); gap: 1rem; border-bottom: 1px solid var(--border); }
+      .nav__tog { display: block; }
+      .intro__grid, .diff__row, .gap__grid, .about__grid { grid-template-columns: 1fr; }
+      .diff__row:nth-child(even) { direction: ltr; }
+      .bento { grid-template-columns: 1fr; }
+      .pgrid { grid-template-columns: 1fr; }
+      .stats__inner { gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo">I<em>-</em>PAL</a>
+      <div class="nav__links" id="navLinks">
+        <a href="#about" class="nav__link">About</a>
+        <a href="#focus" class="nav__link">Focus Areas</a>
+        <a href="#services" class="nav__link">Services</a>
+        <a href="#approach" class="nav__link">Approach</a>
+        <a href="mailto:contact@i-pal.in" class="nav__cta">Get in Touch</a>
+      </div>
+      <button class="nav__tog" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- HERO — split screen -->
+  <section class="hero" id="top">
+    <div class="hero__left">
+      <div class="hero__eyebrow">India Policy Action Lab</div>
+      <h1 class="hero__title">Ideas.<br><em>Institutions.</em><br>Impact.</h1>
+      <p class="hero__desc">Policy-to-implementation advisory for entrepreneurship, innovation, trade, and technology-led growth.</p>
+      <div class="hero__actions">
+        <a href="#focus" class="btn btn--w">Explore Our Work</a>
+        <a href="#about" class="btn btn--o">Learn More →</a>
+      </div>
+    </div>
+    <div class="hero__right">
+      <img src="https://images.unsplash.com/photo-1587474260584-136574528ed5?w=1200&q=80" alt="Indian Parliament Building">
+    </div>
+  </section>
+
+  <!-- STATS BAR -->
+  <div class="stats">
+    <div class="wrap">
+      <div class="stats__inner r">
+        <div class="stat"><div class="stat__num">9</div><div class="stat__label">Focus Domains</div></div>
+        <div class="stat"><div class="stat__num">7</div><div class="stat__label">Service Lines</div></div>
+        <div class="stat"><div class="stat__num">5</div><div class="stat__label">Phase Approach</div></div>
+        <div class="stat"><div class="stat__num">7+</div><div class="stat__label">Partnership Types</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTRO — image + text -->
+  <section class="intro">
+    <div class="wrap">
+      <div class="intro__grid">
+        <div class="intro__img r">
+          <img src="https://images.unsplash.com/photo-1562979314-bee7453e911c?w=800&q=80" alt="Bandra-Worli Sea Link, Mumbai" loading="lazy">
+        </div>
+        <div>
+          <div class="label r" style="margin-bottom:1.5rem">The Challenge</div>
+          <p class="intro__lead r">India does not lack ambition, ideas, or programmes. The larger challenge is turning policy intent into institutions that perform, systems that scale, and outcomes that endure.</p>
+          <p class="intro__text r d1">I-PAL was created to address that gap. We combine policy insight, industry perspective, ecosystem strategy, implementation discipline, and technology-oriented thinking to help public and institutional actors build stronger entrepreneurial and innovation systems.</p>
+          <p class="intro__text r d2">We are not a traditional think tank. We are a dynamic policy-to-implementation platform that works where ideas, institutions, and execution meet.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIFFERENTIATORS — alternating image/text rows -->
+  <section class="diff">
+    <div class="wrap">
+      <div class="label r" style="margin-bottom:3rem">What Sets I-PAL Apart</div>
+
+      <div class="diff__row r">
+        <div class="diff__img"><img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&q=80" alt="Policy advisory boardroom" loading="lazy"></div>
+        <div class="diff__content">
+          <div class="diff__num">01</div>
+          <h3 class="diff__title">Policy with execution discipline</h3>
+          <p class="diff__text">We move beyond analysis and recommendations to operating models, implementation pathways, governance structures, and measurable results.</p>
+        </div>
+      </div>
+
+      <div class="diff__row r">
+        <div class="diff__img"><img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80" alt="Entrepreneurial coworking space" loading="lazy"></div>
+        <div class="diff__content">
+          <div class="diff__num">02</div>
+          <h3 class="diff__title">Industry-informed, policy-grounded</h3>
+          <p class="diff__text">Effective policy must be informed by both ground realities and long-term vision. We combine policy expertise with practical understanding of how institutions, markets, and industries function.</p>
+        </div>
+      </div>
+
+      <div class="diff__row r">
+        <div class="diff__img"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80" alt="Technology and digital innovation" loading="lazy"></div>
+        <div class="diff__content">
+          <div class="diff__num">03</div>
+          <h3 class="diff__title">Technology as a strategic lens</h3>
+          <p class="diff__text">Technology and emerging sectors shape how we think about competitiveness, inclusion, institutional design, market access, and long-term growth.</p>
+        </div>
+      </div>
+
+      <div class="diff__row r">
+        <div class="diff__img"><img src="https://images.unsplash.com/photo-1566552881560-0be862a7c445?w=800&q=80" alt="BMC Building, Mumbai — Indian institutional architecture" loading="lazy"></div>
+        <div class="diff__content">
+          <div class="diff__num">04</div>
+          <h3 class="diff__title">Institution-building at the core</h3>
+          <p class="diff__text">We strengthen the organizations that make ecosystems function — governments, universities, incubators, accelerators, support platforms, and enabling intermediaries.</p>
+        </div>
+      </div>
+
+      <div class="diff__row r">
+        <div class="diff__img"><img src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=800&q=80" alt="Mumbai, India skyline" loading="lazy"></div>
+        <div class="diff__content">
+          <div class="diff__num">05</div>
+          <h3 class="diff__title">India-first, globally informed</h3>
+          <p class="diff__text">Our work is rooted in Indian realities and informed by international practice, comparative learning, and evolving global ecosystem models.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAP — numbered cards -->
+  <section class="gap">
+    <div class="wrap">
+      <div class="gap__bg">7</div>
+      <div class="gap__header r">
+        <div class="label" style="margin-bottom:1rem">The Gap We Address</div>
+        <h2 class="gap__title">Where systems fall short</h2>
+      </div>
+      <div class="gap__grid">
+        <div class="gap__card r"><span class="gap__card-num">1</span><span class="gap__card-text">Strong ideas, but weak translation into action</span></div>
+        <div class="gap__card r d1"><span class="gap__card-num">2</span><span class="gap__card-text">Programmes, but uneven implementation architecture</span></div>
+        <div class="gap__card r d2"><span class="gap__card-num">3</span><span class="gap__card-text">Ambition, but insufficient state and institutional capacity</span></div>
+        <div class="gap__card r"><span class="gap__card-num">4</span><span class="gap__card-text">Ecosystem actors, but limited coordination</span></div>
+        <div class="gap__card r d1"><span class="gap__card-num">5</span><span class="gap__card-text">Pilots, but weak evaluation and learning</span></div>
+        <div class="gap__card r d2"><span class="gap__card-num">6</span><span class="gap__card-text">Growing technology opportunity, but inadequate system design</span></div>
+        <div class="gap__card r"><span class="gap__card-num">7</span><span class="gap__card-text">Global potential, but weak market linkage and institutional readiness</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOCUS — bento grid -->
+  <section class="focus" id="focus">
+    <div class="wrap">
+      <div class="focus__header r">
+        <div><div class="label label--light" style="margin-bottom:0.75rem">Focus Areas</div><h2 class="focus__title">Where we work</h2></div>
+        <div class="focus__count">9 domains of practice</div>
+      </div>
+      <div class="bento">
+        <div class="bento__item bento__item--wide r"><div class="bento__num">01</div><h3 class="bento__title">Entrepreneurial Ecosystems</h3><p class="bento__text">Strengthening the institutional, financial, policy, network, and capability foundations that enable entrepreneurship to emerge, grow, and scale.</p></div>
+        <div class="bento__item r d1"><div class="bento__num">02</div><h3 class="bento__title">Startups, Incubators & Accelerators</h3><p class="bento__text">Improving how startup support systems are designed, governed, funded, and evaluated.</p></div>
+        <div class="bento__item--img r d2"><img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&q=80" alt="Collaborative startup workspace" loading="lazy"></div>
+        <div class="bento__item r"><div class="bento__num">03</div><h3 class="bento__title">Innovation Policy</h3><p class="bento__text">Policy frameworks that strengthen commercialization and sector competitiveness.</p></div>
+        <div class="bento__item r d1"><div class="bento__num">04</div><h3 class="bento__title">Financial Inclusion</h3><p class="bento__text">Expanding access to finance for underserved entrepreneurs through institutional innovation.</p></div>
+        <div class="bento__item r d2"><div class="bento__num">05</div><h3 class="bento__title">Digital Public Infrastructure</h3><p class="bento__text">Using India's DPI to create inclusive, scalable policy and service delivery models.</p></div>
+        <div class="bento__item--img r"><img src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=600&q=80" alt="Policy panel discussion" loading="lazy"></div>
+        <div class="bento__item r d1"><div class="bento__num">06</div><h3 class="bento__title">Entrepreneurial Skills & Capacity</h3><p class="bento__text">Building the knowledge and support for entrepreneurship to move from aspiration to execution.</p></div>
+        <div class="bento__item r d2"><div class="bento__num">07</div><h3 class="bento__title">Entrepreneurship Training</h3><p class="bento__text">Structured programmes for founders, students, youth, women, and micro-entrepreneurs.</p></div>
+        <div class="bento__item bento__item--wide r"><div class="bento__num">08</div><h3 class="bento__title">Trade & Internationalisation</h3><p class="bento__text">Helping enterprises, regions, and ecosystems connect to exports, global markets, international partnerships, and cross-border growth pathways.</p></div>
+        <div class="bento__item--img r d1"><img src="https://images.unsplash.com/photo-1477587458883-47145ed94245?w=600&q=80" alt="City at night" loading="lazy"></div>
+        <div class="bento__item r d2"><div class="bento__num">09</div><h3 class="bento__title">Technology & Emerging Sectors</h3><p class="bento__text">AI, deep tech, climate tech, advanced manufacturing embedded into innovation strategy.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES — sticky sidebar + accordion -->
+  <section class="services" id="services">
+    <div class="wrap">
+      <div class="services__grid">
+        <div class="services__sticky r">
+          <div class="label" style="margin-bottom:1rem">Service Lines</div>
+          <h2 class="services__title">What we deliver</h2>
+          <p class="services__desc">Seven service lines spanning the full policy-to-implementation cycle — from diagnostics and strategy to institutional design, capacity building, and ecosystem coordination.</p>
+          <div class="services__img"><img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&q=80" alt="Handshake partnership" loading="lazy"></div>
+        </div>
+        <div>
+          <div class="svc r"><div class="svc__h" onclick="toggleSvc(this)"><h3 class="svc__t">Startup, Incubator & Accelerator Ecosystems</h3><div class="svc__icon"></div></div><div class="svc__body"><div class="svc__body-inner"><span class="svc__sub">Startup ecosystem diagnostics</span><span class="svc__sub">Incubator and accelerator strategy</span><span class="svc__sub">Governance and operating model design</span><span class="svc__sub">KPI and performance frameworks</span><span class="svc__sub">State startup mission strengthening</span><span class="svc__sub">HEI-based incubation models</span><span class="svc__sub">Sector-specific acceleration</span></div></div></div>
+          <div class="svc r"><div class="svc__h" onclick="toggleSvc(this)"><h3 class="svc__t">Entrepreneurial Skills & Capacity</h3><div class="svc__icon"></div></div><div class="svc__body"><div class="svc__body-inner"><span class="svc__sub">Entrepreneurship curriculum design</span><span class="svc__sub">Faculty and trainer development</span><span class="svc__sub">Venture-readiness modules</span><span class="svc__sub">Women and youth frameworks</span><span class="svc__sub">Entrepreneurial leadership programmes</span><span class="svc__sub">Skill-to-startup pathway design</span></div></div></div>
+          <div class="svc r"><div class="svc__h" onclick="toggleSvc(this)"><h3 class="svc__t">Entrepreneurship Training & Development</h3><div class="svc__icon"></div></div><div class="svc__body"><div class="svc__body-inner"><span class="svc__sub">EDP design</span><span class="svc__sub">Regional outreach models</span><span class="svc__sub">Training-of-trainers frameworks</span><span class="svc__sub">MSME development systems</span><span class="svc__sub">Inclusive entrepreneurship</span><span class="svc__sub">Institution-based support</span></div></div></div>
+          <div class="svc r"><div class="svc__h" onclick="toggleSvc(this)"><h3 class="svc__t">Innovation Ecosystem Development</h3><div class="svc__icon"></div></div><div class="svc__body"><div class="svc__body-inner"><span class="svc__sub">HEI innovation strategy</span><span class="svc__sub">University-industry-government models</span><span class="svc__sub">R&amp;D commercialization</span><span class="svc__sub">Innovation hubs and challenge platforms</span><span class="svc__sub">Deep-tech strategy</span><span class="svc__sub">Regional innovation systems</span></div></div></div>
+          <div class="svc r"><div class="svc__h" onclick="toggleSvc(this)"><h3 class="svc__t">Financial Inclusion & Digital Infrastructure</h3><div class="svc__icon"></div></div><div class="svc__body"><div class="svc__body-inner"><span class="svc__sub">Credit access architecture</span><span class="svc__sub">DPI-enabled service models</span><span class="svc__sub">Financial inclusion strategy</span><span class="svc__sub">Alternative data models</span><span class="svc__sub">Nano and micro enterprise support</span><span class="svc__sub">Inclusion-linked innovation policy</span></div></div></div>
+          <div class="svc r"><div class="svc__h" onclick="toggleSvc(this)"><h3 class="svc__t">Trade & Internationalisation</h3><div class="svc__icon"></div></div><div class="svc__body"><div class="svc__body-inner"><span class="svc__sub">Startup internationalisation</span><span class="svc__sub">Export-oriented frameworks</span><span class="svc__sub">Regional trade strategy</span><span class="svc__sub">Global market readiness</span><span class="svc__sub">Soft-landing and ecosystem partnerships</span><span class="svc__sub">International collaboration models</span></div></div></div>
+          <div class="svc r"><div class="svc__h" onclick="toggleSvc(this)"><h3 class="svc__t">Sector & Institutional Transformation</h3><div class="svc__icon"></div></div><div class="svc__body"><div class="svc__body-inner"><span class="svc__sub">Sector skill council concepts</span><span class="svc__sub">Institution-building for emerging industries</span><span class="svc__sub">Workforce and capability strategy</span><span class="svc__sub">Policy-linked councils and missions</span><span class="svc__sub">Public-private platforms</span></div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPROACH — flow diagram -->
+  <section class="approach" id="approach">
+    <div class="wrap">
+      <div class="approach__header r">
+        <div class="label" style="margin-bottom:1rem">Our Approach</div>
+        <h2 class="approach__title">How we work</h2>
+      </div>
+      <div class="flow r">
+        <div class="flow__step"><div class="flow__num">01</div><div class="flow__name">Diagnose</div><div class="flow__text">Evidence, ecosystem mapping, institutional analysis</div><div class="flow__arrow">→</div></div>
+        <div class="flow__step"><div class="flow__num">02</div><div class="flow__name">Design</div><div class="flow__text">Policy frameworks, institutional models, governance</div><div class="flow__arrow">→</div></div>
+        <div class="flow__step"><div class="flow__num">03</div><div class="flow__name">Build</div><div class="flow__text">Programmes, pilots, challenge platforms, partnerships</div><div class="flow__arrow">→</div></div>
+        <div class="flow__step"><div class="flow__num">04</div><div class="flow__name">Evaluate</div><div class="flow__text">Assess what works, identify bottlenecks, adapt</div><div class="flow__arrow">→</div></div>
+        <div class="flow__step"><div class="flow__num">05</div><div class="flow__name">Scale</div><div class="flow__text">Pilot to institutional and ecosystem-level strategy</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT — image band + content -->
+  <div class="about-img">
+    <img src="https://images.unsplash.com/photo-1566552881560-0be862a7c445?w=1600&q=80" alt="Indian institutional architecture, Mumbai" loading="lazy">
+    <div class="about-img__overlay"></div>
+  </div>
+  <section class="about" id="about">
+    <div class="wrap">
+      <div class="about__grid">
+        <div>
+          <div class="label r" style="margin-bottom:1.5rem">About I-PAL</div>
+          <h2 class="about__title r">Built for consequence, not commentary</h2>
+          <p class="about__text r">India Policy Action Lab is a specialized policy action platform focused on strengthening entrepreneurship, innovation, trade, and technology-enabled development ecosystems in India.</p>
+          <p class="about__text r d1">We work across the policy cycle — from diagnostic research and strategy to institutional design, implementation support, evaluation, capacity building, and cross-sector coordination.</p>
+          <p class="about__text r d2">I-PAL was founded on a simple premise: policy impact depends not only on the quality of ideas, but on the quality of institutions, execution systems, and ecosystem design.</p>
+        </div>
+        <div>
+          <div class="vm-card r">
+            <div class="vm-card__label">Vision</div>
+            <p class="vm-card__text">To build a high-credibility policy action platform that strengthens India's entrepreneurship, innovation, trade, and internationalisation ecosystems through technology-led, institution-focused, and implementation-oriented solutions.</p>
+          </div>
+          <div class="vm-card r d2">
+            <div class="vm-card__label">Mission</div>
+            <p class="vm-card__text">To provide policy advisory, ecosystem strategy, institutional design, implementation support, evaluation, and capability development across startups, digital infrastructure, financial inclusion, innovation systems, trade, and internationalisation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRINCIPLES — with background image and icons -->
+  <section class="principles">
+    <div class="principles__bg"></div>
+    <div class="wrap principles__inner">
+      <div class="principles__header r">
+        <div class="label label--light" style="margin-bottom:1rem">Our Principles</div>
+        <h2 class="principles__title">What guides us</h2>
+      </div>
+      <div class="pgrid">
+        <div class="pcard r">
+          <div class="pcard__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          <h3 class="pcard__title">Ground realities, long-term vision</h3>
+          <p class="pcard__text">Local context and practical constraints paired with strategic, future-oriented thinking.</p>
+        </div>
+        <div class="pcard r d1">
+          <div class="pcard__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10m0 0L8 14m4-4 4 4"/><path d="M4 4h16"/></svg></div>
+          <h3 class="pcard__title">Policy with operational depth</h3>
+          <p class="pcard__text">Governance, process architecture, metrics, and delivery logic alongside policy design.</p>
+        </div>
+        <div class="pcard r d2">
+          <div class="pcard__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <h3 class="pcard__title">Industry meets public purpose</h3>
+          <p class="pcard__text">Solutions that are practical, scalable, and aligned with the wider economic ecosystem.</p>
+        </div>
+        <div class="pcard r">
+          <div class="pcard__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg></div>
+          <h3 class="pcard__title">Technology-embedded design</h3>
+          <p class="pcard__text">Digital infrastructure, emerging tech, and data systems woven into ecosystem strategy.</p>
+        </div>
+        <div class="pcard r d1">
+          <div class="pcard__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <h3 class="pcard__title">Cross-sector collaboration</h3>
+          <p class="pcard__text">Government, academia, industry, startups, investors, and philanthropy working together.</p>
+        </div>
+        <div class="pcard r d2">
+          <div class="pcard__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+          <h3 class="pcard__title">Talent as infrastructure</h3>
+          <p class="pcard__text">Researchers, scholars, and young professionals as institution-builders, not project support.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTNERS — with image -->
+  <section class="partners">
+    <div class="wrap">
+      <div class="partners__inner r">
+        <div class="partners__content">
+          <div class="label" style="margin-bottom:1rem">Partnerships</div>
+          <h2 class="partners__title">Building together</h2>
+          <p class="partners__phil">Strong ecosystems are built through aligned institutions, not isolated actors.</p>
+          <div class="partners__list">
+            <div class="partner">Government and public sector</div>
+            <div class="partner">Universities and higher education</div>
+            <div class="partner">Incubators and accelerators</div>
+            <div class="partner">Corporate and CSR collaborations</div>
+            <div class="partner">Philanthropic and development organizations</div>
+            <div class="partner">Knowledge and research networks</div>
+            <div class="partner">Global ecosystem partnerships</div>
+          </div>
+        </div>
+        <div class="partners__img">
+          <img src="https://images.unsplash.com/photo-1477587458883-47145ed94245?w=800&q=80" alt="Hawa Mahal, Jaipur — India" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="cta__pattern"></div>
+    <div class="wrap cta__inner r">
+      <h2 class="cta__title">Let's build stronger<br>systems together</h2>
+      <p class="cta__text">Whether you represent a government body, university, incubator, corporate, or development organization — we welcome the conversation.</p>
+      <a href="mailto:contact@i-pal.in" class="cta__btn">Start a Conversation <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer__inner">
+        <div class="footer__logo">I<em>-</em>PAL</div>
+        <div class="footer__links">
+          <a href="#about" class="footer__link">About</a>
+          <a href="#focus" class="footer__link">Focus</a>
+          <a href="#services" class="footer__link">Services</a>
+          <a href="#approach" class="footer__link">Approach</a>
+          <a href="mailto:contact@i-pal.in" class="footer__link">Contact</a>
+        </div>
+        <div class="footer__copy">&copy; 2025 India Policy Action Lab</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('v'); });
+    }, { threshold: 0.06, rootMargin: '0px 0px -24px 0px' });
+    document.querySelectorAll('.r').forEach(el => obs.observe(el));
+
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', scrollY > 60);
+    }, { passive: true });
+
+    const navBtn = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    navBtn.addEventListener('click', () => { navBtn.classList.toggle('active'); navLinks.classList.toggle('active'); });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { navBtn.classList.remove('active'); navLinks.classList.remove('active'); }));
+
+    function toggleSvc(h) {
+      const s = h.parentElement, b = s.querySelector('.svc__body'), o = s.classList.contains('open');
+      document.querySelectorAll('.svc').forEach(x => { x.classList.remove('open'); x.querySelector('.svc__body').style.maxHeight = null; });
+      if (!o) { s.classList.add('open'); b.style.maxHeight = b.scrollHeight + 'px'; }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => { e.preventDefault(); const t = document.querySelector(a.getAttribute('href')); if (t) t.scrollIntoView({ behavior:'smooth', block:'start' }); });
+    });
+  </script>
+</body>
+</html>
